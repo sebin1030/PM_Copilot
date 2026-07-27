@@ -1,0 +1,31 @@
+{
+  "documentId": "DOC-PRD-001",
+  "documentType": "prd_requirements",
+  "version": "1.0.0",
+  "language": "ko-KR",
+  "project": {"projectId": "PMC-001", "name": "PM Copilot", "tagline": "AI 기반 PM Workflow Automation Platform"},
+  "source": {"basis": "PM Copilot 프로젝트 기획 내용", "note": "첨부 원본 경로를 현재 환경에서 읽을 수 없어 대화에 제공된 기획 내용을 기준으로 작성"},
+  "vision": "사용자의 서비스 아이디어와 자료를 바탕으로 Project JSON을 Single Source of Truth로 관리하고, 전문 AI Agent가 일관된 PM 산출물을 생성·검토·동기화한다.",
+  "goals": [
+    {"id": "GOAL-001", "description": "프로젝트 입력부터 PRD 승인까지의 핵심 흐름을 완주", "priority": "P0"},
+    {"id": "GOAL-002", "description": "문서 작성 시간과 반복적인 수작업을 줄임", "priority": "P0"},
+    {"id": "GOAL-003", "description": "Project JSON 기반으로 문서 간 일관성을 유지", "priority": "P0"}
+  ],
+  "personas": ["PER-001", "PER-002", "PER-003"],
+  "requirements": [
+    {"id": "REQ-001", "title": "프로젝트 생성", "priority": "P0", "actor": "사용자", "description": "서비스명, 설명, 문제, 타겟, 핵심 기능, 플랫폼, 목적을 입력해 프로젝트를 생성한다.", "acceptanceCriteria": ["필수값이 누락되면 생성할 수 없다", "생성 시 PMC-001 프로젝트 상태가 저장된다"]},
+    {"id": "REQ-002", "title": "PDF 자료 입력", "priority": "P1", "actor": "사용자", "description": "기존 기획안 또는 회의록 PDF를 업로드하고 프로젝트 정보 추출 초안을 확인한다.", "acceptanceCriteria": ["지원하지 않는 파일 형식은 안내한다", "추출 결과를 사용자가 수정할 수 있다"]},
+    {"id": "REQ-003", "title": "문서 선택 생성", "priority": "P0", "actor": "사용자", "description": "PRD, 요구사항 정의서, IA, 화면정의서, WBS 등 생성 대상을 선택한다.", "acceptanceCriteria": ["전체 생성과 선택 생성을 모두 지원한다", "선택하지 않은 문서는 호출하지 않는다"]},
+    {"id": "REQ-004", "title": "승인 기반 Workflow", "priority": "P0", "actor": "사용자", "description": "Agent 결과를 검토·수정·승인한 뒤 다음 단계로 진행한다.", "acceptanceCriteria": ["미승인 결과는 다음 단계의 기준 데이터가 되지 않는다", "승인 상태와 승인 시각을 저장한다"]},
+    {"id": "REQ-005", "title": "PRD 생성 및 수정", "priority": "P0", "actor": "PRD Agent", "description": "Project JSON을 바탕으로 구조화된 PRD를 생성하고 사용자 자연어 요청으로 수정한다.", "acceptanceCriteria": ["결과가 JSON Schema를 통과한다", "수정 대상 문서만 재생성한다"]},
+    {"id": "REQ-006", "title": "영향 범위 반영", "priority": "P1", "actor": "Workflow Manager", "description": "Project JSON 변경 후 영향받는 문서와 Agent만 식별한다.", "acceptanceCriteria": ["변경 항목과 영향 문서를 표시한다", "영향 없는 문서는 재생성하지 않는다"]},
+    {"id": "REQ-007", "title": "문서 버전 관리", "priority": "P1", "actor": "사용자", "description": "문서 생성·수정·승인 이력을 버전으로 보관한다.", "acceptanceCriteria": ["이전 승인 버전을 열람할 수 있다", "현재 버전과 이전 버전을 구분한다"]},
+    {"id": "REQ-008", "title": "Markdown 다운로드", "priority": "P1", "actor": "사용자", "description": "승인된 문서를 Markdown으로 내려받는다.", "acceptanceCriteria": ["파일명이 문서 유형과 버전을 포함한다", "미리보기와 다운로드 내용이 일치한다"]},
+    {"id": "REQ-009", "title": "자료 조사·데이터 분석 확장 영역", "priority": "P2", "actor": "사용자", "description": "같은 PM Copilot 안에서 조사 자료와 분석 결과를 프로젝트의 근거 데이터로 관리한다.", "acceptanceCriteria": ["Project JSON에 research·data_analysis·evidence_refs 영역을 둔다", "조사·분석 결과에 출처와 분석 방법을 기록한다", "분석 결과를 향후 PRD와 요구사항 생성에 전달할 수 있다"]}
+  ],
+  "nonFunctionalRequirements": [{"id": "NFR-001", "area": "보안", "requirement": "OpenAI API 키는 서버 환경변수로만 관리한다."}, {"id": "NFR-002", "area": "신뢰성", "requirement": "AI 결과는 구조화된 JSON 검증 실패 시 저장하지 않는다."}, {"id": "NFR-003", "area": "비용", "requirement": "변경된 문서와 필요한 데이터만 모델에 전달한다."}],
+  "agentRefs": ["AGENT-INTAKE", "AGENT-REQUIREMENT", "AGENT-PRD", "AGENT-REVIEW", "AGENT-WORKFLOW"],
+  "successMetrics": [{"id": "MET-001", "metric": "PRD 생성 완료율", "target": "프로젝트 생성 사용자의 70% 이상"}, {"id": "MET-002", "metric": "승인 완료율", "target": "생성된 PRD의 50% 이상"}, {"id": "MET-003", "metric": "재생성 절감률", "target": "변경 작업에서 전체 Agent 재실행 대비 30% 이상 절감"}],
+  "outOfScope": ["로그인·결제", "실시간 공동 편집", "RAG 기반 외부 문서 검색", "MCP 외부 서비스 연동", "Jira·GitHub·Notion 자동 등록", "자료 조사·데이터 분석의 1차 MVP 구현"],
+  "traceability": {"screenDocument": "DOC-SCREEN-001", "policyDocument": "DOC-POLICY-001", "userDefinitionDocument": "DOC-USER-001", "flowDocument": "DOC-FLOW-001"}
+}
