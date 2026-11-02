@@ -1,14 +1,16 @@
 {
   "documentId": "DOC-USER-001", "documentType": "user_definition_and_scenarios", "version": "1.0.0", "language": "ko-KR", "projectId": "PMC-001",
   "personas": [
-    {"personaId": "PER-001", "name": "PM 취업 준비생", "goal": "포트폴리오용 기획 산출물을 빠르게 완성", "painPoints": ["문서 작성 순서를 모름", "양식과 품질 기준이 불명확"], "needs": ["가이드형 입력", "단계별 검토", "다운로드"]},
-    {"personaId": "PER-002", "name": "주니어 PM", "goal": "반복 문서 작업을 줄이고 요구사항 누락을 방지", "painPoints": ["변경사항의 다중 문서 반영", "짧은 일정"], "needs": ["Project JSON", "영향 범위 표시", "버전 관리"]},
+    {"personaId": "PER-001", "name": "PM 취업 준비생", "goal": "기획 결과뿐 아니라 문제 해결 과정과 판단 근거를 포트폴리오로 설명", "painPoints": ["문서 작성 순서를 모름", "양식과 품질 기준이 불명확", "왜 해당 기능을 선택했는지 설명하기 어려움"], "needs": ["가이드형 입력", "근거 연결", "PM 코칭", "과정 중심 포트폴리오 출력"]},
+    {"personaId": "PER-002", "name": "주니어 PM", "goal": "반복 문서 작업을 줄이고 근거 있는 요구사항과 제품 결정을 관리", "painPoints": ["변경사항의 다중 문서 반영", "짧은 일정", "가정과 사실의 혼동", "요구사항 근거 누락"], "needs": ["Project JSON", "영향 범위 표시", "근거 추적", "의사결정 로그", "버전 관리"]},
     {"personaId": "PER-003", "name": "사이드 프로젝트 기획자", "goal": "아이디어를 실행 가능한 계획으로 변환", "painPoints": ["기획 전문 인력 부족", "초기 문서 작성 부담"], "needs": ["텍스트 입력", "PDF 분석", "선택 생성"]}
   ],
   "scenarios": [
     {"scenarioId": "SCN-001", "name": "새 프로젝트에서 PRD 생성", "actor": "PER-001", "preconditions": ["사용자가 프로젝트 목록에 있음"], "steps": ["SCR-001에서 프로젝트 생성을 선택", "SCR-002에 필수 정보 입력", "SCR-004에서 PRD와 단계별 승인을 선택", "PRD Agent가 결과 생성", "SCR-003에서 결과 검토", "승인"], "postconditions": ["PRD가 APPROVED 상태", "프로젝트 단계가 다음 문서로 이동"], "refs": ["REQ-001", "REQ-003", "REQ-004", "ACT-001", "ACT-003", "ACT-008"]},
     {"scenarioId": "SCN-002", "name": "회의록 PDF로 프로젝트 보완", "actor": "PER-002", "preconditions": ["PDF 파일이 준비됨"], "steps": ["SCR-002에서 PDF 업로드", "추출된 프로젝트 정보 확인", "누락 항목 직접 보완", "프로젝트 생성"], "postconditions": ["수정된 정보가 Project JSON에 저장"], "refs": ["REQ-002", "POL-001", "SCR-002"]},
-    {"scenarioId": "SCN-003", "name": "기능 삭제 후 관련 문서 동기화", "actor": "PER-002", "preconditions": ["승인된 PRD가 존재함"], "steps": ["AI 수정 패널에 로그인 기능 삭제 입력", "영향 범위 확인", "Project JSON 변경 승인", "영향 문서 재생성", "변경 버전 승인"], "postconditions": ["PRD·IA·화면정의서·API만 새 버전으로 갱신", "영향 없는 일정은 유지"], "refs": ["REQ-005", "REQ-006", "POL-004", "AGENT-WORKFLOW"]}
+    {"scenarioId": "SCN-003", "name": "기능 삭제 후 관련 문서 동기화", "actor": "PER-002", "preconditions": ["승인된 PRD가 존재함"], "steps": ["AI 수정 패널에 로그인 기능 삭제 입력", "영향 범위 확인", "Project JSON 변경 승인", "영향 문서 재생성", "변경 버전 승인"], "postconditions": ["PRD·IA·화면정의서·API만 새 버전으로 갱신", "영향 없는 일정은 유지"], "refs": ["REQ-005", "REQ-006", "POL-004", "AGENT-WORKFLOW"]},
+    {"scenarioId": "SCN-004", "name": "요구사항에 근거 연결 및 품질 점검", "actor": "PER-001", "preconditions": ["PRD 초안과 사용자 조사 자료가 존재함"], "steps": ["조사 자료를 근거 항목으로 등록", "요구사항에 근거 연결", "사실·가정·AI 제안 구분 확인", "PM 코칭 실행", "경고 항목 수정 또는 수용"], "postconditions": ["P0 요구사항의 근거 연결 상태가 표시됨", "코칭 결과와 사용자 판단이 저장됨"], "refs": ["REQ-010", "REQ-011", "REQ-012", "POL-010", "POL-011", "POL-012", "SCR-003", "SCR-006"]},
+    {"scenarioId": "SCN-005", "name": "과정 중심 포트폴리오 생성", "actor": "PER-001", "preconditions": ["근거, 의사결정 로그, 승인된 PRD가 존재함"], "steps": ["포트폴리오 생성 선택", "포함할 근거와 결정 검토", "문제 정의부터 최종 결정까지의 보고서 생성", "개인정보와 비공개 항목 제외", "Markdown 다운로드"], "postconditions": ["기획 결과와 사고 과정이 포함된 포트폴리오 보고서가 생성됨"], "refs": ["REQ-013", "REQ-014", "POL-013", "SCR-008"]}
   ],
   "refs": {"prd": "DOC-PRD-001", "screens": "DOC-SCREEN-001", "policies": "DOC-POLICY-001", "flow": "DOC-FLOW-001"}
 }
