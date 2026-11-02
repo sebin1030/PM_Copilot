@@ -11,6 +11,20 @@ DATA_DIR = Path(os.getenv("PM_COPILOT_DATA_DIR", ROOT_DIR / "data")).resolve()
 PROJECTS_DIR = DATA_DIR / "projects"
 UPLOAD_LIMIT_BYTES = 10 * 1024 * 1024
 
+# Set both values to switch from the local development store to Supabase.
+SUPABASE_URL = os.getenv("SUPABASE_URL", "").rstrip("/")
+SUPABASE_PUBLISHABLE_KEY = os.getenv("SUPABASE_PUBLISHABLE_KEY", "")
+ALLOWED_ORIGINS = [
+    origin.strip() for origin in os.getenv(
+        "PM_COPILOT_ALLOWED_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173",
+    ).split(",") if origin.strip()
+]
+
+
+def supabase_enabled() -> bool:
+    return bool(SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY)
+
 CHAT_MODEL = os.getenv("OPENAI_CHAT_MODEL", "gpt-5.6-luna")
 DOCUMENT_MODEL = os.getenv("OPENAI_DOCUMENT_MODEL", "gpt-5.6-terra")
 
